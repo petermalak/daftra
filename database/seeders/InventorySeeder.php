@@ -14,10 +14,10 @@ class InventorySeeder extends Seeder
     {
         // Create warehouses
         $warehouses = \App\Models\Warehouse::factory(5)->create();
-        
+
         // Create inventory items
         $inventoryItems = \App\Models\InventoryItem::factory(20)->create();
-        
+
         // Create stock records for each item in each warehouse
         foreach ($inventoryItems as $item) {
             foreach ($warehouses as $warehouse) {
@@ -27,8 +27,10 @@ class InventorySeeder extends Seeder
                 ]);
             }
         }
-        
+
         // Create some stock transfers
         \App\Models\StockTransfer::factory(10)->create();
+
+
     }
 }

@@ -8,20 +8,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  string  ...$roles
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        $user = $request->user();
-        if (!$user || !in_array($user->role, $roles)) {
-            return response()->json(['message' => 'Forbidden.'], 403);
+        // Check if user is authenticated
+        if (!$request->user()) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
         }
+
+        // Check if user has any of the required roles
+        if (!in_array($request->user()->role, $roles)) {
+            return response()->json([
+                'message' => 'Forbidden. Required role: '.implode(', ', $roles),
+                'your_role' => $request->user()->role
+            ], 403);
+        }
+
         return $next($request);
     }
 }

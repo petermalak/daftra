@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\StockTransferController;
 use App\Http\Controllers\WarehouseController;
@@ -22,6 +23,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Add login route for API authentication
+Route::post('/login', function (Request $request) {
+    $credentials = $request->only('email', 'password');
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        $token = $user->createToken('api-token')->plainTextToken;
+        return response()->json(['token' => $token]);
+    }
+    return response()->json(['message' => 'Invalid credentials'], 401);
+});
+
 // Inventory listing per warehouse (with filters)
 Route::get('/inventory', [InventoryController::class, 'index']);
 
@@ -31,7 +43,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 });
 
 // Inventory item create (admin, manager)
-Route::middleware(['auth:sanctum', 'role:admin,manager'])->group(function () {
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/inventory-items', [InventoryItemController::class, 'store']);
     Route::put('/inventory-items/{id}', [InventoryItemController::class, 'update']);
 });

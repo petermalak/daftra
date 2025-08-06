@@ -1,0 +1,348 @@
+{
+	"info": {
+		"_postman_id": "82ec38b3-6a78-4a45-86a8-b01b63d08420",
+		"name": "Inventory System API",
+		"description": "Postman collection for Inventory System API endpoints.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10930605"
+	},
+	"item": [
+		{
+			"name": "Get Inventory List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/inventory?warehouse_id=1&per_page=15",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"inventory"
+					],
+					"query": [
+						{
+							"key": "warehouse_id",
+							"value": "1",
+							"description": "Filter by warehouse ID"
+						},
+						{
+							"key": "item_id",
+							"value": "1",
+							"description": "Filter by item ID",
+							"disabled": true
+						},
+						{
+							"key": "search",
+							"value": "widget",
+							"description": "Search term",
+							"disabled": true
+						},
+						{
+							"key": "min_quantity",
+							"value": "0",
+							"description": "Minimum quantity",
+							"disabled": true
+						},
+						{
+							"key": "max_quantity",
+							"value": "100",
+							"description": "Maximum quantity",
+							"disabled": true
+						},
+						{
+							"key": "per_page",
+							"value": "15",
+							"description": "Items per page"
+						}
+					]
+				},
+				"description": "Get a paginated list of inventory items with optional filters."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Stock Transfer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"inventory_item_id\": 1,\n  \"from_warehouse_id\": 1,\n  \"to_warehouse_id\": 2,\n  \"quantity\": 10,\n  \"notes\": \"Optional note\",\n  \"transferred_by\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/stock-transfers",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"stock-transfers"
+					]
+				},
+				"description": "Transfer stock between warehouses. Requires admin role."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Inventory Item",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Item Name\",\n  \"sku\": \"SKU123\",\n  \"description\": \"Optional description\",\n  \"category\": \"Category\",\n  \"brand\": \"Brand\",\n  \"unit_of_measure\": \"pcs\",\n  \"minimum_stock_level\": 5,\n  \"maximum_stock_level\": 100,\n  \"is_active\": true\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/inventory-items",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"inventory-items"
+					]
+				},
+				"description": "Create a new inventory item. Requires admin or manager role."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Inventory Item",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Updated Item\",\n  \"sku\": \"SKU1234\",\n  \"description\": \"Updated description\",\n  \"category\": \"Updated Category\",\n  \"brand\": \"Updated Brand\",\n  \"unit_of_measure\": \"pcs\",\n  \"minimum_stock_level\": 10,\n  \"maximum_stock_level\": 200,\n  \"is_active\": false\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/inventory-items/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"inventory-items",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				},
+				"description": "Update an existing inventory item by ID. Requires admin or manager role."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Inventory Item",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/inventory-items/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"inventory-items",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				},
+				"description": "Delete an inventory item by ID. Requires admin role."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Warehouses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/warehouses",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"warehouses"
+					]
+				},
+				"description": "Get a list of all warehouses."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Warehouse Inventory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/warehouses/:id/inventory?per_page=15&search=widget&min_quantity=0&max_quantity=100&page=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"warehouses",
+						":id",
+						"inventory"
+					],
+					"query": [
+						{
+							"key": "per_page",
+							"value": "15",
+							"description": "Items per page"
+						},
+						{
+							"key": "search",
+							"value": "widget",
+							"description": "Search term"
+						},
+						{
+							"key": "min_quantity",
+							"value": "0",
+							"description": "Minimum quantity"
+						},
+						{
+							"key": "max_quantity",
+							"value": "100",
+							"description": "Maximum quantity"
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Page number"
+						}
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				},
+				"description": "Get inventory for a specific warehouse."
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Warehouse Inventory Cache",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/warehouses/:id/inventory/cache",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"warehouses",
+						":id",
+						"inventory",
+						"cache"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				},
+				"description": "Clear the inventory cache for a specific warehouse."
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"1234\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "Get the currently authenticated user. Requires authentication."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost"
+		},
+		{
+			"key": "token",
+			"value": "YOUR_AUTH_TOKEN"
+		}
+	]
+}
